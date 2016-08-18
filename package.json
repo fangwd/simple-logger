@@ -1,0 +1,25 @@
+{
+  "name": "simple-logger",
+  "version": "0.1.0",
+  "description": "An extremely simple logger",
+  "main": "index.js",
+  "scripts": {
+    "test": null
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fangwd/simple-logger.git"
+  },
+  "keywords": [
+    "node.js",
+    "logger",
+    "simple"
+  ],
+  "author": "Weidong Fang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fangwd/simple-logger/issues"
+  },
+  "homepage": "https://github.com/fangwd/simple-logger"
+}
+
