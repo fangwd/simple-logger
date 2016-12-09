@@ -1,5 +1,7 @@
 'use strict'
 
+const fs = require('fs')
+
 function SimpleLogger(options) {
   const Levels = {
     TRACE: 0,
@@ -14,6 +16,35 @@ function SimpleLogger(options) {
     return new SimpleLogger(options)
   }
 
+  this.open = function(path, level, next) {
+    if (typeof level === 'function') {
+      next = level
+      level = undefined
+    }
+    this.level = Levels[level || 'INFO']
+    this.output = fs.open(path, 'a', (err, fd) => {
+      if (err) {
+        if (next)
+          next(err)
+        else
+          throw err
+      }
+      else {
+        console.log(this)
+        this.output = fd
+        if (next) next()
+      }
+    })
+  }
+
+  this.close = function(next) {
+    if (typeof this.output === 'number') {
+      fs.close(this.output, next)
+    }
+    else if (next)
+      next()
+  }
+
   this.output = process.stdout
   this.level = 1
 
@@ -26,7 +57,16 @@ function SimpleLogger(options) {
                .replace(/[\r]/g, '\\r')
                .replace(/[\t]/g, '\\t')
     }
-    this.output.write(`${t} ${label} ${msg}\n`)
+    let buf = `${t} ${label} ${msg}\n`
+    if (typeof this.output === 'object') {
+      this.output.write(buf)
+    }
+    else if (typeof this.output === 'number') {
+      fs.write(this.output, buf)
+    }
+    else {
+      process.stdout.write(buf)
+    }
   }
 
   this.trace = function(msg) {
