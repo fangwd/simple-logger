@@ -30,7 +30,6 @@ function SimpleLogger(options) {
           throw err
       }
       else {
-        console.log(this)
         this.output = fd
         if (next) next()
       }
