@@ -61,7 +61,9 @@ function SimpleLogger(options) {
       this.output.write(buf)
     }
     else if (typeof this.output === 'number') {
-      fs.write(this.output, buf)
+      fs.write(this.output, buf, err => {
+        if (err) throw err;
+      })
     }
     else {
       process.stdout.write(buf)
