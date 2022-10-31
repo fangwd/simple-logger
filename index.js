@@ -68,6 +68,10 @@ function SimpleLogger(options) {
     else {
       process.stdout.write(buf)
     }
+  
+    if (this.output && this.output !== process.stdout) {
+      process.stdout.write(buf)
+    }
   }
 
   this.trace = function(msg) {
